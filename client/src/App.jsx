@@ -21,86 +21,75 @@ function App() {
 
       return;
     }
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          try {
-            const data = {
-              latitude: position.coords.latitude,
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          setStatus("Saving your location...");
 
-              longitude: position.coords.longitude,
+          const data = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy,
+            user: navigator.userAgent,
+          };
 
-              accuracy: position.coords.accuracy,
+          await saveLocation(data);
 
-              user: navigator.userAgent,
-            };
-
-            await saveLocation(data);
-
-            setSuccess(true);
-
-            setStatus("Location recorded successfully.");
-          } catch (error) {
-            setStatus("Failed to save your location.");
-          } finally {
-            setLoading(false);
-          }
-        },
-        (error) => {
+          setSuccess(true);
+          setStatus("Location recorded successfully.");
+        } catch (error) {
+          setStatus("Failed to save your location.");
+        } finally {
           setLoading(false);
+        }
+      },
+      (error) => {
+        setLoading(false);
 
-          alert("Location permission is required for visitor tracking.");
+        alert("Location permission is required for visitor tracking.");
 
-          setStatus("Location permission is required for visitor tracking.");
-        },
-      );
-    
+        setStatus("Location permission is required for visitor tracking.");
+      },
+    );
   };
 
- return (
-  <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
-    <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
+  return (
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
+        <h1 className="text-3xl font-bold text-center text-slate-800 mb-6">
+          QR Visitor Tracking
+        </h1>
 
-      <h1 className="text-3xl font-bold text-center text-slate-800 mb-6">
-        QR Visitor Tracking
-      </h1>
+        {loading ? (
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-10 w-10 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
 
-      {loading ? (
-        <div className="flex flex-col items-center gap-4">
+            <p className="text-slate-600 font-medium">{status}</p>
 
-          <div className="h-10 w-10 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
-
-          <p className="text-slate-600 font-medium">
-            Requesting your location...
-          </p>
-
-          <p className="text-sm text-slate-500 text-center">
-            Please allow location access when prompted.
-          </p>
-
-        </div>
-      ) : (
-        <div className="text-center">
-
-          <p
-            className={`text-lg font-semibold ${
-              success ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {status}
-          </p>
-
-          {!success && (
-            <p className="mt-3 text-sm text-slate-500">
-              Please  allow location access and refresh the page .
+            <p className="text-sm text-slate-500 text-center">
+              Please allow location access.
             </p>
-          )}
+          </div>
+        ) : (
+          <div className="text-center">
+            <p
+              className={`text-lg font-semibold ${
+                success ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {status}
+            </p>
 
-        </div>
-      )}
-
+            {!success && (
+              <p className="mt-3 text-sm text-slate-500">
+                Please allow location access and refresh the page .
+              </p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default App;
