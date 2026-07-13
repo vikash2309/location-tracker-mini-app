@@ -30,7 +30,7 @@ function App() {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             accuracy: position.coords.accuracy,
-            user: navigator.userAgent,
+              deviceInfo: navigator.userAgent,
           };
 
           await saveLocation(data);
