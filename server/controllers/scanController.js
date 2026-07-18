@@ -99,3 +99,17 @@ const { city, state, country } = location;
     }
 
 };
+
+export const getdata=async(req,res)=>{
+
+     try {
+        const scans = await Scan.find().lean();
+
+        res.json(scans);
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message
+        });
+    }
+}
