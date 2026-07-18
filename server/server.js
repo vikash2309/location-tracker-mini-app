@@ -5,6 +5,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import scanRoutes from "./routes/scanRoutes.js"
 
+
 dotenv.config();
 
 const app = express();
@@ -16,6 +17,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+  app.set("trust proxy", true);
 
 //  Routes
 app.get("/", (req, res) => {

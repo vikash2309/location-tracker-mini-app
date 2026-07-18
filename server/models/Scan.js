@@ -17,10 +17,52 @@ const scanSchema = new mongoose.Schema({
         required: true
     },
 
-    deviceInfo: {
+    // deviceInfo: {
+    //     type: String,
+    //     required: true
+    // },
+     city: {
+        type: String
+    },
+
+    state: {
+        type: String
+    },
+
+    country: {
+        type: String
+    },
+
+    // Client Information
+    ipAddress: {
         type: String,
         required: true
     },
+     browser: {
+        type: String
+    },
+
+    os: {
+        type: String
+    },
+    userAgent: {
+    type: String,
+    required: true
+},
+
+
+    deviceType: {
+        type: String
+    },
+     // Location Permission
+    // permissionStatus: {
+    //     type: String,
+    //     enum: ["granted", "denied"],
+    //     default: "granted"
+    // },
+
+    // Rapid Request Detection
+   
 
     scannedAt: {
         type: Date,

@@ -1,5 +1,8 @@
 import Scan from "../models/Scan.js";
 
+
+import { getLocationFromCoordinates } from "../services/geocode.service.js";
+
 export const saveScan = async (req, res) => {
 
     try {
@@ -8,15 +11,36 @@ export const saveScan = async (req, res) => {
             latitude,
             longitude,
             accuracy,
-            deviceInfo
+           
         } = req.body;
+
+        const location = await getLocationFromCoordinates(
+    latitude,
+    longitude
+);
+
+const { city, state, country } = location;
+
+        const {
+            ipAddress,
+            userAgent,
+            browser,
+            os,
+            deviceType
+        }=req.clientInfo
+
+
+       
+// const city="sadabad"
+// const state="up"
+// const country="india"
 
         // Check if all required fields are present
         if (
             latitude === undefined ||
             longitude === undefined ||
-            accuracy === undefined ||
-            !deviceInfo
+            accuracy === undefined
+
         ) {
 
             return res.json({
@@ -30,22 +54,29 @@ export const saveScan = async (req, res) => {
         }
 
         const scan = await Scan.create({
-
             latitude,
-
             longitude,
-
             accuracy,
 
-            deviceInfo
+            ipAddress,
+            userAgent,
 
+            browser,
+            os,
+            deviceType,
+
+            
+
+
+            city,
+            state,
+            country
         });
-
         return res.json({
 
             success: true,
 
-            message: "Location stored successfully.",
+            message: "Location recorded successfully.",
 
             data: scan
 

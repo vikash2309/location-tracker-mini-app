@@ -24,19 +24,29 @@ function App() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         try {
-          setStatus("Saving your location...");
+          setStatus("trying to get your location...");
 
           const data = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             accuracy: position.coords.accuracy,
-              deviceInfo: navigator.userAgent,
+              
           };
 
-          await saveLocation(data);
 
-          setSuccess(true);
-          setStatus("Location recorded successfully.");
+          const response=await saveLocation(data);
+          if(response.data.success){
+            setSuccess(true);
+          setStatus("location recorded successfully");
+
+          }
+          else{
+             setSuccess(false);
+          setStatus(response.data.message);
+
+
+          }
+          
         } catch (error) {
           setStatus("Failed to save your location.");
         } finally {
